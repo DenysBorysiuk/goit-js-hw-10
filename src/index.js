@@ -20,12 +20,13 @@ function onInput(e) {
 
 function renderCountriesCard(countries) {
   console.log('рисуем разметку', countries);
+  let markup;
   if (countries.length > 10) {
     Notify.info('Too many matches found. Please enter a more specific name.');
     refs.countryList.innerHTML = '';
     refs.countryInfo.innerHTML = '';
   } else if (countries.length < 10 && countries.length > 1) {
-    let markup = countries
+    markup = countries
       .map(country => {
         return `
           <li class="country-item">
