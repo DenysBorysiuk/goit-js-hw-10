@@ -13,7 +13,7 @@ const refs = {
 refs.inputCountry.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
 function onInput(e) {
-  console.log(e.target.value);
+  console.log(e.target.value); //inputCountry.value
   const inputName = e.target.value.trim();
   fetchCountries(inputName).then(renderCountriesCard).catch(onFetchError);
 }
