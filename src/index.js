@@ -60,5 +60,6 @@ function renderCountriesCard(countries) {
 }
 
 function onFetchError(error) {
+  console.log(error);
   Notify.failure('Oops, there is no country with that name');
 }
