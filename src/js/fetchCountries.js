@@ -7,11 +7,3 @@ export const fetchCountries = function (name) {
     return response.json();
   });
 };
-
-// second version version
-
-// export const fetchCountries = function (name) {
-//   return fetch(`https://restcountries.com/v2/name/${name}`).then(response =>
-//     response.json()
-//   );
-// };
