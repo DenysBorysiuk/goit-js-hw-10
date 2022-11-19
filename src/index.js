@@ -12,50 +12,45 @@ const refs = {
 
 refs.inputCountry.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
-function onInput(e) {
-  console.log(e.target.value); //inputCountry.value
-  const inputName = e.target.value.trim();
-  fetchCountries(inputName).then(renderCountriesCard).catch(onFetchError);
+function onInput() {
+  const inputName = refs.inputCountry.value.trim();
+  if (inputName === '') {
+    return (refs.countryList.innerHTML = ''), (refs.countryInfo.innerHTML = '');
+  }
+  fetchCountries(inputName).then(renderCountriesMarkup).catch(onFetchError);
 }
 
-function renderCountriesCard(countries) {
-  // console.log('рисуем разметку', countries);
-  let markup = '';
+function renderCountriesMarkup(countries) {
+  refs.countryList.innerHTML = '';
+  refs.countryInfo.innerHTML = '';
+
   if (countries.length > 10) {
     Notify.info('Too many matches found. Please enter a more specific name.');
-    refs.countryList.innerHTML = '';
-    refs.countryInfo.innerHTML = '';
   } else if (countries.length < 10 && countries.length > 1) {
-    markup = countries
-      .map(country => {
+    refs.countryList.innerHTML = countries
+      .map(({ name, flag }) => {
         return `
           <li class="country-item">
-            <img src="${country.flag}" width= 40 height= 30 alt="${country.name}">
-            <p>${country.name}</p>
+            <img src="${flag}" width= 40 height= 30 alt="${name}">
+            <p>${name}</p>
           </li>
       `;
       })
       .join('');
-    refs.countryInfo.innerHTML = '';
-    refs.countryList.innerHTML = markup;
   } else if (countries.length === 1) {
-    markup = countries
-      .map(country => {
+    refs.countryInfo.innerHTML = countries
+      .map(({ name, flag, capital, population, languages }) => {
         return `
-            <div class="country-info-wrap">
-              <img src="${country.flag}" width= 40 height= 30 alt="${
-          country.name
-        }">
-              <p class="country-text">${country.name}</p>
-            </div>
-            <p><b>Capital:</b> ${country.capital}</p>
-            <p><b>Population:</b> ${country.population}</p>
-            <p><b>Languages:</b> ${country.languages.map(el => el.name)}</p>
+          <div class="country-info-wrap">
+           <img src="${flag}" width= 40 height= 30 alt="${name}">
+           <p class="country-text">${name}</p>
+          </div>
+          <p><b>Capital:</b> ${capital}</p>
+          <p><b>Population:</b> ${population}</p>
+          <p><b>Languages:</b> ${languages.map(el => el.name)}</p>
       `;
       })
       .join('');
-    refs.countryList.innerHTML = '';
-    refs.countryInfo.innerHTML = markup;
   }
 }
 
